@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      #canvas {
+        background: blue;
+        height: 80vh;
+      }
+      .element {
+        padding: 1rem;
+        background: white;
+        border: 1px solid black;
+      }
+      .closest {
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="mouse-position-display"></p>
+    <div id="canvas">
+      <h1 class="element">heading</h1>
+      <div class="element">div</div>
+      <button class="element">button 1</button>
+      <!-- <button class="element">button 2</button> -->
+      <p class="element">p 1</p>
+      <button class="element">button 3</button>
+      <button class="element">button 4</button>
+      <p class="element">p2</p>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const elements = document.querySelectorAll(".element");
+
+      canvas.addEventListener("mousemove", (e) => {
+        let minDistance = Infinity;
+        let minDistanceY = Infinity;
+        let minDistanceX = Infinity;
+        let closestElement = null;
+        let closestElementY = null;
+        let closestElementX = null;
+
+        document.getElementById(
+          "mouse-position-display"
+        ).innerText = `X: ${e.clientX}, Y: ${e.clientY}`;
+
+        elements.forEach((element) => {
+          const elementRect = element.getBoundingClientRect();
+          const centerX = elementRect.left + elementRect.width / 2;
+          const centerY = elementRect.top + elementRect.height / 2;
+          const distanceX = Math.abs(e.clientX - centerX);
+          const distanceY = Math.abs(e.clientY - centerY);
+          element.innerText = `${elementRect.y}, ydistance: ${distanceY}`;
+
+          const totalDistance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+
+          if (totalDistance < minDistance) {
+            minDistance = totalDistance;
+            closestElement = element;
+          }
+
+          if (distanceY < minDistanceY) {
+            minDistanceY = distanceY;
+            closestElementY = element;
+          }
+          if (distanceX < minDistanceX) {
+            minDistanceX = distanceX;
+            closestElementX = element;
+          }
+        });
+
+        elements.forEach((element) => {
+          element.classList.remove("closest");
+        });
+
+        const closestElementRect = closestElement.getBoundingClientRect();
+        const closestElementYRect = closestElementY.getBoundingClientRect();
+
+        if (closestElementRect.y == closestElementYRect.y) {
+          closestElement.classList.add("closest");
+        } else {
+          closestElementY.classList.add("closest");
+        }
+      });
+    </script>
+  </body>
+</html>

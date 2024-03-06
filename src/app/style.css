@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.drop-indicator {
+  border-bottom: 5px solid blue;
+}
